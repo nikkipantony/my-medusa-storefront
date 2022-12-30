@@ -2,6 +2,8 @@ require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 })
 
+// require("dotenv").config()
+
 module.exports = {
   siteMetadata: {
     title: `Medusa Gatsby Starter`,
@@ -11,6 +13,23 @@ module.exports = {
   plugins: [
     `gatsby-plugin-netlify`,
     `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-plugin-postcss`,
+      options: {
+        postCssPlugins: [require("tailwindcss"), require("autoprefixer")],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-purgecss`,
+      options: {
+        printRejected: false,
+        develop: false,
+        tailwind: true,
+      },
+    },
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -26,28 +45,10 @@ module.exports = {
         path: `${__dirname}/src/content/info/`,
       },
     },
-    `gatsby-plugin-image`,
-    `gatsby-plugin-sharp`,
-    `gatsby-transformer-sharp`,
-    {
-      resolve: `gatsby-plugin-postcss`,
-      options: {
-        postCssPlugins: [require("tailwindcss"), require("autoprefixer")],
-      },
-    },
-    {
-      resolve: `gatsby-plugin-purgecss`,
-      options: {
-        printRejected: false,
-        develop: false,
-        tailwind: true,
-      },
-    },
     {
       resolve: `gatsby-source-medusa`,
       options: {
-        storeUrl:
-          process.env.GATSBY_MEDUSA_BACKEND_URL || `http://localhost:9000`,
+        storeUrl: process.env.GATSBY_MEDUSA_BACKEND_URL,
       },
     },
   ],
